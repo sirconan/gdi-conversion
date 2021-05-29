@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "cue-parser": "^0.3.0",
+    "fs-extra": "^10.0.0"
+  },
+  "name": "gdi-conversion",
+  "description": "gdi-conversion is a small node program to convert Dreamcast Game Images (cue and bin files) to GDI Images in order to run on GDEmu.",
+  "version": "0.0.1",
+  "main": "src/main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sirconan/gdi-conversion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sirconan/gdi-conversion/issues"
+  },
+  "homepage": "https://github.com/sirconan/gdi-conversion#readme"
+}
