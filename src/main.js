@@ -69,6 +69,19 @@ const createSummaryFile = (gdiOutput) => {
 	fs.writeFile(outputGdiFilePath, gdiOutput, () => console.log(`${outputGdiFilePath} created`));
 };
 
+const createTitleFile = () => {
+	fs.open(`${workingDirectory}/${OUTPUT_FOLDER}/track01.bin`, 'r+', function (inputFileError, inputFd) {
+		const buffer = Buffer.alloc(128);
+
+		fs.read(inputFd, buffer, 0, 128, 0x90, (error, bytesRead, bufferRead) => {
+			const outputNameFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/name.txt`;
+			fs.writeFile(outputNameFilePath, bufferRead.toString().trim(), () =>
+				console.log(`${outputNameFilePath} created`)
+			);
+		});
+	});
+};
+
 fs.access(absPath, (err) => {
 	if (err) {
 		console.error(`Error: ${filepath} does not exist`);
@@ -118,6 +131,7 @@ fs.access(absPath, (err) => {
 
 		if (index === files.length - 1) {
 			createSummaryFile(gdiOutput);
+			createTitleFile();
 		}
 	});
 });
