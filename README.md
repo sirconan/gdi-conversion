@@ -24,4 +24,4 @@ or
 or 
 
 - Download last release available
-- `gdi-conversion-linux -n ./PATH_OF_THE_FILE.cue` or `gdi-conversion-macos -n ./PATH_OF_THE_FILE.cue` or `gdi-conversion-win.exe -n ./PATH_OF_THE_FILE.cue` depending used operating system
+- `gdi-conversion-linux -n ./PATH_OF_THE_FILE.gdi` or `gdi-conversion-macos -n ./PATH_OF_THE_FILE.gdi` or `gdi-conversion-win.exe -n ./PATH_OF_THE_FILE.gdi` depending used operating system
