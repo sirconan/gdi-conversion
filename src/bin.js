@@ -17,7 +17,7 @@ fs.access(absPath, (err) => {
 
 	switch (command) {
 		case '-n':
-			extractName(workingDirectory);
+			extractName(absPath, workingDirectory);
 			return;
 		case '-c':
 			gdiConversion(absPath, workingDirectory);
@@ -25,6 +25,6 @@ fs.access(absPath, (err) => {
 		default:
 			console.log(`invalid parameter action: ${command}`);
 			console.log('-c		to convert .cue file to .gdi');
-			console.log('-n		to extract the game\'s name from the converted disk.gdi file');
+			console.log('-n		to extract the game\'s name from the converted disc.gdi file');
 	}
 });

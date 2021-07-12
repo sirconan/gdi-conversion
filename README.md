@@ -18,10 +18,10 @@ or
 # How to use it to extract game's name from disk.gdi file ?
 - clone this repository
 - run `npm install`
-- run `node src/bin.js -n ./PATH_OF_THE_FILE.gdi` to extract game's name
+- run `node src/bin.js -n ./PATH_OF_THE_FILE/disc.gdi` to extract game's name
 - `name.txt` file is created in the same folder to store the game's name. When you use `-c` command to convert, `-n` command is automatically running
 
 or 
 
 - Download last release available
-- `gdi-conversion-linux -n ./PATH_OF_THE_FILE.gdi` or `gdi-conversion-macos -n ./PATH_OF_THE_FILE.gdi` or `gdi-conversion-win.exe -n ./PATH_OF_THE_FILE.gdi` depending used operating system
+- `gdi-conversion-linux -n ./PATH_OF_THE_FILE/disc.gdi` or `gdi-conversion-macos -n ./PATH_OF_THE_FILE/disc.gdi` or `gdi-conversion-win.exe -n ./PATH_OF_THE_FILE/disc.gdi` depending used operating system
