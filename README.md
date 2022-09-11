@@ -32,6 +32,7 @@ gdi-conversion-win.exe [option] <input>
 
 # Output
 An `output` folder will be create next to `.cue` file containing conversion result
+
 A `name.txt` file will be created next to `.gdi` file containing the game's name 
 
 # Examples
