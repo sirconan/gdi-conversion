@@ -9,10 +9,8 @@
   },
   "name": "gdi-conversion",
   "description": "gdi-conversion is a small node program to convert Dreamcast Game Images (cue and bin files) to GDI Images in order to run on GDEmu.",
-  "version": "1.1.1",
-  "main": "src/main.js",
+  "version": "1.2.0",
   "bin": "src/bin.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -2,29 +2,34 @@ const path = require('path');
 const fs = require('fs');
 const gdiConversion = require('./convert');
 const extractName = require('./name');
+const getAllFiles = require('./getAllFiles');
 
-const [ , , command, filePath] = process.argv;
+const [ , , command, userPath] = process.argv;
 
-const absPath = path.resolve(process.cwd(), filePath);
+if (userPath === undefined) {
+	console.error('Error: cannot find path argument');
+	return;
+}
+
+const absPath = path.resolve(process.cwd(), userPath);
 
 fs.access(absPath, (err) => {
 	if (err) {
-		console.error(`Error: ${filePath} does not exist`);
+		console.error(`Error: ${userPath} does not exist`);
 		return;
 	}
-	
-	const workingDirectory = path.dirname(absPath);
 
-	switch (command) {
+	switch (command.toLowerCase()) {
 		case '-n':
-			extractName(absPath, workingDirectory);
+			getAllFiles(absPath, '.gdi').forEach(extractName);			
 			return;
 		case '-c':
-			gdiConversion(absPath, workingDirectory);
+			getAllFiles(absPath, '.cue').forEach(gdiConversion);
 			return;
 		default:
-			console.log(`invalid parameter action: ${command}`);
-			console.log('-c		to convert .cue file to .gdi');
-			console.log('-n		to extract the game\'s name from the converted disc.gdi file');
+			console.error(`Error: invalid parameter action: ${command}`);
+			console.error('Use:')
+			console.error('	-c		to convert .cue file to .gdi');
+			console.error('	-n		to extract the game\'s name from the converted disc.gdi file');
 	}
 });

@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+const path = require('path');
 const parser = require('cue-parser');
 const fs = require('fs');
 const fsExtra = require('fs-extra');
@@ -9,63 +9,65 @@ const TRACK_TYPE_AUDIO = 'AUDIO';
 const BLOCK_SIZE = 2352;
 const OUTPUT_FOLDER = 'output';
 
-module.exports = function(absPath, workingDirectory) {
-	const parseFile = (absPath) => {
-		try {
-			return parser.parse(absPath);
-		} catch (errSheet) {
-			console.error(`Cannot convert ${absPath}, only cue files are allowed`);
+const parseFile = (absPath) => {
+	try {
+		return parser.parse(absPath);
+	} catch (errSheet) {
+		console.error(`Cannot convert ${absPath}, only cue files are allowed`);
+	}
+};
+
+const countIndexFrames= ({time}) => {
+	let result = time.frame;
+	result += (time.sec * 75);
+	result += ((time.min * 60) * 75);
+	return result;
+};
+
+const copyFileWithGapOffset = (inputFile, outputFile, size, frames) => {
+	const position = frames * BLOCK_SIZE;
+	
+	const buffer = Buffer.alloc(size);
+
+	fs.open(inputFile, 'r+', function (inputFileError, inputFd) {
+		if (inputFileError) {
+			throw inputFileError;
 		}
-	};
-
-	const countIndexFrames= ({time}) => {
-		let result = time.frame;
-		result += (time.sec * 75);
-		result += ((time.min * 60) * 75);
-		return result;
-	};
-
-	const copyFileWithGapOffset = (inputFile, outputFile, size, frames) => {
-		const position = frames * BLOCK_SIZE;
-		
-		const buffer = Buffer.alloc(size);
-
-		fs.open(inputFile, 'r+', function (inputFileError, inputFd) {
-			if (inputFileError) {
-				throw inputFileError;
+	
+		fs.open(outputFile, 'w+', function (outputFileError, outputFd) {
+			if (outputFileError) {
+				throw outputFileError;
 			}
-		
-			fs.open(outputFile, 'w+', function (outputFileError, outputFd) {
-				if (outputFileError) {
-					throw outputFileError;
+			
+			fs.read(inputFd, buffer, 0, size, position, (error, bytesRead, bufferRead) => {
+				if (error) {
+					throw error;
 				}
 				
-				fs.read(inputFd, buffer, 0, size, position, (error, bytesRead, bufferRead) => {
-					if (error) {
-						throw error;
-					}
-					
-					fs.write(outputFd, bufferRead.slice(0, bytesRead), () => console.log(`${outputFile} created`));
-				});
+				fs.write(outputFd, bufferRead.slice(0, bytesRead), () => void 0);
 			});
 		});
+	});
 
-		return (size - position) / BLOCK_SIZE;
-	};
+	return (size - position) / BLOCK_SIZE;
+};
 
-	const padTrackNumber = (currentTrack) => {
-		if (currentTrack < 10) {
-			return `0${currentTrack}`;
-		}
+const padTrackNumber = (currentTrack) => {
+	if (currentTrack < 10) {
+		return `0${currentTrack}`;
+	}
 
-		return currentTrack;
-	};
+	return currentTrack;
+};
 
-	const createSummaryFile = (gdiOutput) => {
-		const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/disc.gdi`;
-		fs.writeFile(outputGdiFilePath, gdiOutput, () => console.log(`${outputGdiFilePath} created`));
-	};
-	
+const createSummaryFile = (workingDirectory, gdiOutput) => {
+	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/disc.gdi`;
+	fs.writeFile(outputGdiFilePath, gdiOutput, () => void 0);
+};
+
+module.exports = function(absPath) {
+	const workingDirectory = path.dirname(absPath);
+
 	let currentSector = 0;
 	fsExtra.emptyDirSync(`${workingDirectory}/${OUTPUT_FOLDER}`);
 
@@ -89,7 +91,7 @@ module.exports = function(absPath, workingDirectory) {
 		let sectorAmount = 0;
 
 		if (canPerformFullCopy) {
-			fs.copyFile(inputTrackFilePath, outputTrackFilePath, () => console.log(`${outputTrackFilePath} created`));
+			fs.copyFile(inputTrackFilePath, outputTrackFilePath, () => void 0);
 			sectorAmount = inputTrackFileSize / BLOCK_SIZE;
 		} else {
 			const gapOffset = countIndexFrames(currentTrack.indexes[1]);
@@ -108,7 +110,7 @@ module.exports = function(absPath, workingDirectory) {
 		}
 
 		if (index === files.length - 1) {
-			createSummaryFile(gdiOutput);
+			createSummaryFile(workingDirectory, gdiOutput);
 			extractName(`${workingDirectory}/${OUTPUT_FOLDER}/`);
 		}
 	});

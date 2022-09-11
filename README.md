@@ -1,27 +1,46 @@
 # gdi-conversion
-gdi-conversion is a small Node.js program to convert Dreamcast Game Images (cue and bin files) to GDI Images in order to run on GDEmu. 
+
+gdi-conversion is a small Node.js program to convert Dreamcast Game Images (cue and bin files) to GDI Images in order to run on GDEmu.
 
 # Requirements
+
 gdi-conversion tool has been developed on Linux with node 16.2.0 and npm 7.14. Three executables files have been built for Linux, Macos and Windows.
 
-# How to use it for convert to GDI format?
-- clone this repository
+# How to use it
+
+- clone  repository
 - run `npm install`
-- run `node src/bin.js -c ./PATH_OF_THE_FILE_TO_CONVERT.cue` to convert CUE to GDI
-- `output` folder is created in the source file folder and content gdi, bin and raw files, is ready for your GDEmu sdcard. `name.txt` file is created inside the `output` folder to store the game's name.
+- run `node src/bin.js [option] <input>`
 
-or 
+or
 
-- Download last release available
-- `gdi-conversion-linux -c ./PATH_OF_THE_FILE_TO_CONVERT.cue` or `gdi-conversion-macos -c ./PATH_OF_THE_FILE_TO_CONVERT.cue` or `gdi-conversion-win.exe -c ./PATH_OF_THE_FILE_TO_CONVERT.cue` depending used operating system
+- Download last release available and depending used operating system run :
 
-# How to use it to extract game's name from disk.gdi file ?
-- clone this repository
-- run `npm install`
-- run `node src/bin.js -n ./PATH_OF_THE_FILE/disc.gdi` to extract game's name
-- `name.txt` file is created in the same folder to store the game's name. When you use `-c` command to convert, `-n` command is automatically running
+ ```
+gdi-conversion-linux [option] <input> 
+gdi-conversion-macos [option] <input>
+gdi-conversion-win.exe [option] <input>
+``` 
 
-or 
+# Parameters 
 
-- Download last release available
-- `gdi-conversion-linux -n ./PATH_OF_THE_FILE/disc.gdi` or `gdi-conversion-macos -n ./PATH_OF_THE_FILE/disc.gdi` or `gdi-conversion-win.exe -n ./PATH_OF_THE_FILE/disc.gdi` depending used operating system
+- [option]: 
+	- `-c` to convert cue to gdi
+	- `-n` to extract game's name from gdi file
+
+- \<input\>: gdi or cue file path or folder path for mass file conversion
+
+# Output
+An `output` folder will be create next to `.cue` file containing conversion result
+A `name.txt` file will be created next to `.gdi` file containing the game's name 
+
+# Examples
+```
+gdi-conversion-linux -c ./MyUser/
+``` 
+to convert recursively all .cue files in MyUser folder on linux
+
+```
+gdi-conversion-win.exe -n ./Download/Game/disc.gdi
+```
+ to convert only Game/disc.gdi file on window
