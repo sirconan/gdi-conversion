@@ -9,6 +9,7 @@ const TRACK_TYPE_AUDIO = 'AUDIO';
 const BLOCK_SIZE = 2352;
 const OUTPUT_FOLDER = 'output';
 
+
 const parseFile = (absPath) => {
 	try {
 		return parser.parse(absPath);
@@ -60,8 +61,9 @@ const padTrackNumber = (currentTrack) => {
 	return currentTrack;
 };
 
-const createSummaryFile = (workingDirectory, gdiOutput) => {
-	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/disc.gdi`;
+const createSummaryFile = (workingDirectory, gdiOutput, absPath) => {
+  const filename = path.basename(absPath,'.cue');
+	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${filename}.gdi`;
 	fs.writeFile(outputGdiFilePath, gdiOutput, () => void 0);
 };
 
@@ -69,7 +71,7 @@ module.exports = function(absPath) {
 	const workingDirectory = path.dirname(absPath);
 
 	let currentSector = 0;
-	fsExtra.emptyDirSync(`${workingDirectory}/${OUTPUT_FOLDER}`);
+	//fsExtra.emptyDirSync(`${workingDirectory}/${OUTPUT_FOLDER}`);
 
 	const cueSheet = parseFile(absPath);
 	if (!cueSheet) {
@@ -84,7 +86,7 @@ module.exports = function(absPath) {
 		const inputTrackFilePath = `${workingDirectory}/${file.name}`;
 		const canPerformFullCopy = currentTrack.indexes.length == 1;
 		
-		const outputTrackFileName = `track${padTrackNumber(currentTrack.number)}.${currentTrack.type === TRACK_TYPE_AUDIO ? "raw" : "bin"}`
+		const outputTrackFileName = `'${file.name.substring(0,file.name.indexOf("."))} track${padTrackNumber(currentTrack.number)}.${currentTrack.type === TRACK_TYPE_AUDIO ? "raw" : "bin"}'`
 		
 		const outputTrackFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${outputTrackFileName}`;
 		const {size: inputTrackFileSize} = fs.statSync(inputTrackFilePath);
@@ -110,7 +112,7 @@ module.exports = function(absPath) {
 		}
 
 		if (index === files.length - 1) {
-			createSummaryFile(workingDirectory, gdiOutput);
+			createSummaryFile(workingDirectory, gdiOutput, absPath);
 			extractName(`${workingDirectory}/${OUTPUT_FOLDER}/`);
 		}
 	});
