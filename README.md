@@ -1,10 +1,10 @@
 # gdi-conversion
 
-gdi-conversion is a small Node.js program to convert Dreamcast Game Images (cue and bin files) to GDI Images in order to run on GDEmu.
+gdi-conversion is a small Node.js program to convert Dreamcast Game Images (cue and bin files) to GDI Images in order to run on GDEmu or further compression to CHD (as CHD files fails to run if compressed directly from bin/cue files).
 
 # Requirements
 
-gdi-conversion tool has been developed on Linux with node 16.2.0 and npm 7.14. Three executables files have been built for Linux, Macos and Windows.
+gdi-conversion tool has been developed on Linux with node 18.16.1 and npm 9.7.2. Three executables files have been built for Linux, Macos and Windows.
 
 # How to use it
 
@@ -42,6 +42,6 @@ gdi-conversion-linux -c ./MyUser/
 to convert recursively all .cue files in MyUser folder on linux
 
 ```
-gdi-conversion-win.exe -n ./Download/Game/disc.gdi
+gdi-conversion-win.exe -n ./Download/Game/[insert_your_disc_name].gdi
 ```
- to convert only Game/disc.gdi file on window
+ to convert only Game/[insert_your_disc_name].gdi file on windows
