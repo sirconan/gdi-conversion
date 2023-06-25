@@ -86,7 +86,7 @@ module.exports = function(absPath) {
 		const inputTrackFilePath = `${workingDirectory}/${file.name}`;
 		const canPerformFullCopy = currentTrack.indexes.length == 1;
 		
-		const outputTrackFileName = `'${file.name.substring(0,file.name.indexOf("."))} track${padTrackNumber(currentTrack.number)}.${currentTrack.type === TRACK_TYPE_AUDIO ? "raw" : "bin"}'`
+		const outputTrackFileName = `${file.name.substring(0,file.name.indexOf("."))} track${padTrackNumber(currentTrack.number)}.${currentTrack.type === TRACK_TYPE_AUDIO ? "raw" : "bin"}`
 		
 		const outputTrackFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${outputTrackFileName}`;
 		const {size: inputTrackFileSize} = fs.statSync(inputTrackFilePath);
