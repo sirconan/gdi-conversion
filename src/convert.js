@@ -61,9 +61,20 @@ const padTrackNumber = (currentTrack) => {
 	return currentTrack;
 };
 
+// this Regex surely look rather arcane, though it was the more precise, 
+// fool-proof way to rename .gdi files by striping out any extra text 
+// inside ()[]{} (and these special characters themselves, along with others),
+// also trimming any extra spaces and replacing special chars
+// and spaces between words with _ that might restrain chdman
+// or any chain/batch operations to do its job.
+// This might be especially true when running scripts on PowerShell
+// or UNIX shell that might interpret these encapsulations as
+// functions or background shells, thus breaking the strings and
+// failing the compression operation
+
 const createSummaryFile = (workingDirectory, gdiOutput, absPath) => {
   const filename = path.basename(absPath,'.cue');
-	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${filename}.gdi`;
+	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${filename.replace(/[\s]?[\[\(\{]([\s]?[\w]+.?[\w]+[\s]?)+?[\]\)\}][\s]?/g,'').replace(/([^.A-z])/g, '_')}.gdi`;
 	fs.writeFile(outputGdiFilePath, gdiOutput, () => void 0);
 };
 
@@ -86,7 +97,7 @@ module.exports = function(absPath) {
 		const inputTrackFilePath = `${workingDirectory}/${file.name}`;
 		const canPerformFullCopy = currentTrack.indexes.length == 1;
 		
-		const outputTrackFileName = `${file.name.substring(0,file.name.indexOf("."))} track${padTrackNumber(currentTrack.number)}.${currentTrack.type === TRACK_TYPE_AUDIO ? "raw" : "bin"}`
+		const outputTrackFileName = `${file.name.substring(0,file.name.indexOf("."))} track${padTrackNumber(currentTrack.number)}.${currentTrack.type === TRACK_TYPE_AUDIO ? "raw" : "bin"}`;
 		
 		const outputTrackFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${outputTrackFileName}`;
 		const {size: inputTrackFileSize} = fs.statSync(inputTrackFilePath);
