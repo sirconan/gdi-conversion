@@ -74,7 +74,7 @@ const padTrackNumber = (currentTrack) => {
 
 const createSummaryFile = (workingDirectory, gdiOutput, absPath) => {
   const filename = path.basename(absPath,'.cue');
-	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${filename.replace(/[\s]?[\[\(\{]([\s]?[\w]+.?[\w]+[\s]?)+?[\]\)\}][\s]?/g,'').replace(/([^.A-z])/g, '_')}.gdi`;
+	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${filename.replace(/[\s]?[\[\(\{]([\s]?[\w]+.?[\w]+[\s]?)+?[\]\)\}][\s]?/g,'').replace(/([^.^\d^\w])/g, '_')}.gdi`;
 	fs.writeFile(outputGdiFilePath, gdiOutput, () => void 0);
 };
 
