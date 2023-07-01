@@ -76,7 +76,7 @@ const gdiFilenameParser = (filename) => {
   const hasDisc = filename.match(/disc\s\d/gi);
   const disc = hasDisc === null ? "" : hasDisc.toString();
   const gdiname = `${filename.replace(/[\s]?[\[\(\{]([\s]?[\w]+.?[\w]+[\s]?)+?[\]\)\}][\s]?/g,'')} ${disc}`;
-  return `${gdiname.replace(/([^.^\d^\w])/g, '_')}.gdi`;
+  return `${gdiname.trim().replace(/([^.^\d^\w])/g, '_')}.gdi`;
 };
 
 const createSummaryFile = (workingDirectory, gdiOutput, absPath) => {
