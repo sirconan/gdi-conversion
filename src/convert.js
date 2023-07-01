@@ -61,7 +61,7 @@ const padTrackNumber = (currentTrack) => {
 	return currentTrack;
 };
 
-// this Regex surely look rather arcane, though it was the more precise, 
+// this new function surely look rather arcane, though it was the more precise, 
 // fool-proof way to rename .gdi files by striping out any extra text 
 // inside ()[]{} (and these special characters themselves, along with others),
 // also trimming any extra spaces and replacing special chars
@@ -72,9 +72,16 @@ const padTrackNumber = (currentTrack) => {
 // functions or background shells, thus breaking the strings and
 // failing the compression operation
 
+const gdiFilenameParser = (filename) => {
+  const hasDisc = filename.match(/disc\s\d/gi);
+  const disc = hasDisc === null ? "" : hasDisc.toString();
+  const gdiname = `${filename.replace(/[\s]?[\[\(\{]([\s]?[\w]+.?[\w]+[\s]?)+?[\]\)\}][\s]?/g,'')} ${disc}`;
+  return `${gdiname.replace(/([^.^\d^\w])/g, '_')}.gdi`;
+};
+
 const createSummaryFile = (workingDirectory, gdiOutput, absPath) => {
   const filename = path.basename(absPath,'.cue');
-	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${filename.replace(/[\s]?[\[\(\{]([\s]?[\w]+.?[\w]+[\s]?)+?[\]\)\}][\s]?/g,'').replace(/([^.^\d^\w])/g, '_')}.gdi`;
+ 	const outputGdiFilePath = `${workingDirectory}/${OUTPUT_FOLDER}/${gdiFilenameParser(filename)}`;
 	fs.writeFile(outputGdiFilePath, gdiOutput, () => void 0);
 };
 
