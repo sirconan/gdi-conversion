@@ -39,9 +39,9 @@ A `name.txt` file will be created next to `.gdi` file containing the game's name
 ```
 gdi-conversion-linux -c ./MyUser/
 ``` 
-to convert recursively all .cue files in MyUser folder on linux
+to convert recursively all .cue files in MyUser folder on Linux
 
 ```
 gdi-conversion-win.exe -n ./Download/Game/disc.gdi
 ```
- to convert only Game/disc.gdi file on window
+ to convert only Game/disc.gdi file on Windows
